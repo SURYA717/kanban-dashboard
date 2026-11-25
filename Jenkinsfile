@@ -24,5 +24,14 @@ pipeline {
                 }
             }
         }
+        stage('Deploy to EC2') {
+            steps {
+                sh '''
+                    docker pull surya717/kanban-dashboard:latest
+                    docker rm -f kanban-dashboard || true
+                    docker run -d --name kanban-dashboard -p 8081:8080 --restart unless-stopped surya717/kanban-dashboard:latest
+                '''
+            }
+        }
     }
 }
